@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212; /* Dark background */
+            color: #FFFFFF; /* Light text for contrast */
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #1DB954; /* Spotify green */
+        }
+
+        .filter-form {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .filter-form select {
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+            background-color: #1e1e1e;
+            color: #FFFFFF;
+            border: 1px solid #444;
+            border-radius: 4px;
+        }
+
+        .filter-form button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #1DB954; /* Spotify green */
+            color: #FFFFFF;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .filter-form button:hover {
+            background-color: #14833B;
+        }
+
+        .song-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .song-card {
+            background-color: #1e1e1e; /* Slightly lighter dark for cards */
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            transition: transform 0.2s;
+        }
+
+        .song-card:hover {
+            transform: scale(1.05);
+        }
+
+        .song-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .song-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .song-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+    <h1>Song Gallery</h1>
+
+    <!-- Filter Form -->
+    <form action="/songs" method="get" class="filter-form">
+        <select name="time_range">
+            <option value="short_term" {% if time_range == 'short' %}selected{% endif %}>Short Term</option>
+            <option value="medium_term" {% if time_range == 'medium' %}selected{% endif %}>Medium Term</option>
+            <option value="long_term" {% if time_range == 'long' %}selected{% endif %}>Long Term</option>
+        </select>
+
+        <select name="limit">
+            <option value="5" {% if limit == 5 %}selected{% endif %}>5</option>
+            <option value="10" {% if limit == 10 %}selected{% endif %}>10</option>
+            <option value="15" {% if limit == 15 %}selected{% endif %}>15</option>
+            <option value="20" {% if limit == 20 %}selected{% endif %}>20</option>
+            <option value="25" {% if limit == 25 %}selected{% endif %}>25</option>
+            <option value="30" {% if limit == 30 %}selected{% endif %}>30</option>
+            <option value="50" {% if limit == 50 %}selected{% endif %}>50</option>
+        </select>
+
+        <button type="submit">Filter</button>
+    </form>
+
+    <div class="song-gallery">
+        {% for song_name, album_cover in songs_and_covers %}
+        <div class="song-card">
+            <img src="{{ album_cover }}" alt="{{ song_name }}" class="song-image">
+            <div class="song-info">
+                <p class="song-title">{{ song_name }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
