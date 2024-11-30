@@ -1,0 +1,9 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "~=0.115.0"
+requests = "~=2.32.3"
+pydantic-settings = "~=2.6.1"

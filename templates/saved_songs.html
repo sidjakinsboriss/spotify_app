@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Songs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Spotify-like dark background */
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #1DB954; /* Spotify green */
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input, select, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input, select {
+            background-color: #282828;
+            color: white;
+        }
+        button {
+            background-color: #1DB954;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1ed760;
+        }
+        .song-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        .song {
+            text-align: center;
+        }
+        .song img {
+            width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Spotify Songs by Year</h1>
+        <form action="http://localhost:8000/saved" method="get">
+            <label for="release_year">Enter Release Year:</label>
+            <input type="text" id="release_year" name="year" placeholder="e.g., 2022">
+
+            <button type="submit">Filter Songs</button>
+        </form>
+
+        <div class="song-grid">
+            {% for song, cover in songs_and_covers %}
+            <div class="song">
+                <img src="{{ cover }}" alt="{{ song }}">
+                <p>{{ song }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
