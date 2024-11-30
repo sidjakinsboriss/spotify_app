@@ -4,6 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = "~=0.115.0"
+fastapi = { version = "~=0.115.0", extras = ["standard"] }
 requests = "~=2.32.3"
 pydantic-settings = "~=2.6.1"
+
+[requires]
+python_version = "3.11"
