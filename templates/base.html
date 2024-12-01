@@ -1,0 +1,119 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Songs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            background-color: #121212; /* Spotify-like dark background */
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .sidebar {
+            background-color: #181818;
+            width: 200px;
+            padding-top: 20px;
+            position: fixed;
+            height: 100%;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 15px;
+            text-align: center;
+        }
+        .sidebar ul li a {
+            color: #1DB954;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .sidebar ul li a:hover {
+            color: white;
+        }
+        .content {
+            margin-left: 220px;
+            width: calc(100% - 220px);
+            padding: 20px;
+        }
+
+        /* Song Card Styling */
+        .song-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        .song {
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .song:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+        .song img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .song p {
+            margin-top: 8px;
+            font-size: 14px;
+        }
+
+        /* Form Styling */
+        form {
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input, select, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input, select {
+            background-color: #282828;
+            color: white;
+        }
+        button {
+            background-color: #1DB954;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1ed760;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Include the sidebar -->
+    {% include 'sidebar.html' %}
+
+    <!-- Content section where other templates will be injected -->
+    <div class="content">
+        {% block content %}
+        <!-- This will be replaced by the content of the child template -->
+        {% endblock %}
+    </div>
+
+</body>
+</html>
