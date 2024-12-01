@@ -6,7 +6,6 @@ from functools import lru_cache
 from urllib.parse import urlencode
 
 import httpx
-import requests
 from fastapi import FastAPI, Depends, Request
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -45,7 +44,7 @@ def generate_random_string(length: int) -> str:
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
 
-def set_access_token(code: str, settings: Settings = Depends(get_settings)):
+async def set_access_token(code: str, settings: Settings = Depends(get_settings)):
     oauth_credentials = f'{settings.client_id.get_secret_value()}:{settings.client_secret.get_secret_value()}'
     data = {
         'code': code,
@@ -56,7 +55,8 @@ def set_access_token(code: str, settings: Settings = Depends(get_settings)):
         'content-type': 'application/x-www-form-urlencoded',
         'Authorization': 'Basic ' + base64.b64encode(oauth_credentials.encode()).decode()
     }
-    response = requests.post(settings.spotify_token_url, headers=headers, data=data)
+    async with httpx.AsyncClient() as client:
+        response = await client.post(settings.spotify_token_url, headers=headers, data=data)
     access_token = response.json().get('access_token')
     global ACCESS_TOKEN
     ACCESS_TOKEN = access_token
@@ -68,12 +68,13 @@ def callback(_: str = Depends(set_access_token)):
 
 
 @app.get('/top_songs', response_class=HTMLResponse)
-def get_top_songs(request: Request, time_range: str = 'long_term', limit: int = 10):
+async def get_top_songs(request: Request, time_range: str = 'long_term', limit: int = 10):
     url = 'https://api.spotify.com/v1/me/top/tracks'
     headers = {
         'Authorization': f'Bearer {ACCESS_TOKEN}'
     }
-    response = requests.get(url, headers=headers, params={'time_range': time_range, 'limit': limit})
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, headers=headers, params={'time_range': time_range, 'limit': limit})
 
     data = response.json()['items']
     song_names = [song['name'] for song in data]

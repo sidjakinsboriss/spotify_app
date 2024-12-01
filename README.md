@@ -12,3 +12,5 @@ pipenv install
 ```bash
 fastapi dev main.py
 ```
+
+The app is now available at http://localhost:8000.
